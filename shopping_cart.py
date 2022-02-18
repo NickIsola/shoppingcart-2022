@@ -41,6 +41,8 @@ def to_usd(my_price):
 
 
 total_price = 0 
+selected_ids = []
+
 
 while True: 
 
@@ -50,14 +52,11 @@ while True:
     # print(product_id)
     if product_id == "DONE":
         break
-
-    # LOOK UP CORRESPONDING PRODUCTS
-
-
-    # PRINT PRODUCT THAT HAS AN ID ATTRIBUTE EQUAL TO product_id USER CHOSE
-
+    else: 
+        selected_ids.append(product_id)
+    
+for product_id in selected_ids:
     matching_products = []
-
     for p in products:
         if str(p["id"]) == str(product_id):
             matching_products.append(p)
@@ -65,8 +64,6 @@ while True:
 
     matching_product = matching_products[0]
     total_price = total_price + matching_product["price"]
-
     print("SELECTED PRODUCT: " +matching_product["name"] + " " + str(matching_product["price"]))
-
 
 print("TOTAL PRICE: " + str(total_price))
