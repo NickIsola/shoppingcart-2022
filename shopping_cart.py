@@ -36,39 +36,40 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-
-# write some Python code here to produce the desired output
-
+# PROJECT CODE BELOW: 
 
 total_price = 0 
 selected_ids = []
+product_ids = []
+
+# list of known product ids to aid in data validation 
+for p in products: 
+    product_ids.append(p["id"])
+
+product_ids = [str(id) for id in product_ids]
 
 while True: 
 
-# ASK FOR USER INPUT
-# TODO: input validation 
+# ask for and validate user input
+    selected_id = input("Please input a product identifier, or 'DONE' if there are no more items: ")
 
-    product_id = input("Please input a product identifier, or 'DONE' if there are no more items: ")
-    # print(product_id)
-    if product_id == "DONE":
+    if selected_id == "DONE":
         break
+    elif selected_id not in product_ids:
+        print("Invalid product identifier. Please try again!")  
     else: 
-        selected_ids.append(product_id)
+        selected_ids.append(selected_id)
 
 print("------------------------------------")
 print("Shopping Cart Items:")
 
-for product_id in selected_ids:
+for selected_id in selected_ids:
     matching_products = []
     for p in products:
-        if str(p["id"]) == str(product_id):
+        if str(p["id"]) == str(selected_id):
             matching_products.append(p)
-    # print(matching_products)
-    # print(type(matching_products))
 
     matching_product = matching_products[0]
-    # print(matching_product)
-    # print(type(matching_product))
 
     total_price = total_price + matching_product["price"]
     # print("SELECTED PRODUCT: " + matching_product["name"] + " " + str(matching_product["price"]))
