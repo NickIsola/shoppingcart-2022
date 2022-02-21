@@ -1,5 +1,6 @@
-# shopping_cart.py
+# shopping_cart.py code
 
+# current product list (based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017)
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -21,9 +22,9 @@ products = [
     {"id":18, "name": "Pizza for One Suprema Frozen Pizza", "department": "frozen", "aisle": "frozen pizza", "price": 12.50},
     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
-] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
+] 
 
-
+# usd currency formatting section
 def to_usd(my_price):
     """
     Converts a numeric value to usd-formatted string, for printing and display purposes.
@@ -36,8 +37,8 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}" #> $12,000.71
 
-# PROJECT CODE BELOW: 
 
+# initialize variables to be used
 subtotal_price = 0 
 grand_total = 0
 selected_ids = []
@@ -49,6 +50,7 @@ for p in products:
 
 product_ids = [str(id) for id in product_ids]
 
+# loop to collect user inputs
 while True: 
 
 # ask for and validate user input
@@ -61,20 +63,22 @@ while True:
     else: 
         selected_ids.append(selected_id)
 
-# outputs
+# outputs for receipts
 print("------------------------------------")
 print("Isola Grocery & Deli")
 print("------------------------------------")
 print("Web: www.isolagroceryanddeli.com")
 print("Phone: 1.213.899.4542")
 
-# Checkout date and time
+# checkout date and time
 from datetime import datetime
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 print("Checkout time:", dt_string)
 
 print("------------------------------------")
+
+# item list with name and price
 print("Shopping Cart Items:")
 
 for selected_id in selected_ids:
@@ -89,18 +93,16 @@ for selected_id in selected_ids:
     # print("SELECTED PRODUCT: " + matching_product["name"] + " " + str(matching_product["price"]))
     print(" " + "+", matching_product["name"], "(" + to_usd((matching_product["price"])) + ")")
 
-# OUTPUTS 
+# subtotal
 print("------------------------------------")
 print("Subtotal:" , to_usd(subtotal_price))
 
-
-#OUTPUTS
-
+# taxes
 tax_rate = 0.0875
 total_taxes = subtotal_price * tax_rate
 print(" " + "+ NY Sales Tax 8.75%", "(" + to_usd(total_taxes) + ")")
 
-
+# grand total
 grand_total = subtotal_price + total_taxes
 print("Total:", to_usd(grand_total))
 
