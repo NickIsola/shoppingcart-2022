@@ -49,4 +49,8 @@ mkdir .env
     ]
 }
 
-
+## Tax Rate
+To enter tax rate: 
+```sh
+TAX_RATE="0.0875" shopping_cart.py
+```
