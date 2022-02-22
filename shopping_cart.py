@@ -54,6 +54,7 @@ product_ids = [str(id) for id in product_ids]
 while True: 
 
 # ask for and validate user input
+# allow program to still execute if 0 items are purchased (personal desing preference)
     selected_id = input("Please input a product identifier, or 'DONE' if there are no more items: ")
 
     if selected_id == "DONE":
@@ -110,4 +111,51 @@ print("------------------------------------")
 print("Thanks for shopping with us. Have a wonderful day!")
 print("------------------------------------")
 
+# extras 
 
+# *** 
+# must tell the user somehow to install the sendgrid package / template stuff
+# ***
+
+matching_products_list = []
+for selected_id in selected_ids:
+    for p in products:
+        if str(p["id"]) == str(selected_id):
+            matching_products_list.append(p)
+
+import os
+from dotenv import load_dotenv
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+load_dotenv()
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
+SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="OOPS, please set env var called 'SENDGRID_TEMPLATE_ID'")
+SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
+
+# this must match the test data structure
+template_data = {
+    "total_price_usd": grand_total,    
+    "human_friendly_timestamp": dt_string,
+
+    "products": matching_products_list,
+}
+client = SendGridAPIClient(SENDGRID_API_KEY)
+print("CLIENT:", type(client))
+
+message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS)
+message.template_id = SENDGRID_TEMPLATE_ID
+message.dynamic_template_data = template_data
+print("MESSAGE:", type(message))
+
+try:
+    response = client.send(message)
+    print("RESPONSE:", type(response))
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+
+except Exception as err:
+    print(type(err))
+    print(err)
