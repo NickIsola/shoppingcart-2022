@@ -99,9 +99,11 @@ print("------------------------------------")
 print("Subtotal:" , to_usd(subtotal_price))
 
 # taxes
-tax_rate = 0.0875
+import os
+tax_rate = os.getenv("TAX_RATE", default= 0.0875)
 total_taxes = subtotal_price * tax_rate
-print(" " + "+ NY Sales Tax 8.75%", "(" + to_usd(total_taxes) + ")")
+print(" " + "+ Sales Tax",  "{:.2%}".format(tax_rate), "(" + to_usd(total_taxes) + ")")
+
 
 # grand total
 grand_total = subtotal_price + total_taxes
@@ -113,9 +115,7 @@ print("------------------------------------")
 
 # extras 
 
-# *** 
-# must tell the user somehow to install the sendgrid package / template stuff
-# ***
+# Sendgrid Email Sending & Template
 
 matching_products_list = []
 for selected_id in selected_ids:
@@ -134,7 +134,7 @@ SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env v
 SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="OOPS, please set env var called 'SENDGRID_TEMPLATE_ID'")
 SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
 
-# this must match the test data structure
+# matches the test data structure
 template_data = {
     "total_price_usd": grand_total,    
     "human_friendly_timestamp": dt_string,
